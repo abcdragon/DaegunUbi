@@ -39,7 +39,7 @@ class body:
                         ('Text files', '*.txt'),
                         ('JPEG files', '*.jpg') ))
         if files:
-            for file in files: self.fList.insert(END, file)  # 리스트에 파일 경로를 저장
+            for file in files.split(): self.fList.insert(END, file)  # 리스트에 파일 경로를 저장
         else:
             messagebox.showwarning("경고", "파일을 선택하지 않았습니다.")
             return
