@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter.filedialog import askopenfilenames
 import upload
+import download
 
 class body:
     def __init__(self): # 각종 컴포넌트 등을 초기화
@@ -10,6 +11,12 @@ class body:
         mycolor='#%02x%02x%02x' % (163, 204, 163)
         self.root.config(bg=mycolor)
         self.root.resizable(0,0) # x와 y 축으로 window 크기를 늘이는 것을 못하게 막음
+
+        self.menu = Menu(self.root)
+        self.root.config(menu=self.menu)
+        file = Menu(self.menu)
+        file.add_command(label='Exit', command=self.client_exit)
+        self.menu.add_cascade(label='File', menu=file)
 
         self.fList = Listbox(self.root,width=69,height=20,bg='white') # width ==> 한 줄에 들어갈 '문자 수', height==> 줄 수
         self.fList.grid(padx=9,pady=5,row=0,column=0,columnspan=3,sticky=E+W) # colmnspan 가로로 덮을 공간 따라서 0~3만큼의 공간을 덮는다.
@@ -23,6 +30,9 @@ class body:
 
         self.regBtn = Button(self.root, text="업로드", width=20, height=2, command=self.reg)
         self.regBtn.grid(pady=5,row=1,column=2)
+
+    def client_exit(self):
+        exit()
 
     def start(self): # 프로그램 시작
         self.root.mainloop()
@@ -39,7 +49,7 @@ class body:
                         ('Text files', '*.txt'),
                         ('JPEG files', '*.jpg') ))
         if files:
-            for file in files.split(): self.fList.insert(END, file)  # 리스트에 파일 경로를 저장
+            for file in files: self.fList.insert(END, file)  # 리스트에 파일 경로를 저장
         else:
             messagebox.showwarning("경고", "파일을 선택하지 않았습니다.")
             return
