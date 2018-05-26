@@ -6,16 +6,20 @@ import download
 
 class body:
     def __init__(self): # 각종 컴포넌트 등을 초기화
+        self.active=False
+
         self.root = Tk();self.root.title("FTP 파일 공유 시스템") # GUI 초기화와 타이틀 지정
         self.root.geometry('505x385') # window 크기조정
         mycolor='#%02x%02x%02x' % (163, 204, 163)
         self.root.config(bg=mycolor)
         self.root.resizable(0,0) # x와 y 축으로 window 크기를 늘이는 것을 못하게 막음
+        self.root.protocol("WM_DELETE_WINDOW", self.close)
 
         self.menu = Menu(self.root)
         self.root.config(menu=self.menu)
         file = Menu(self.menu)
-        file.add_command(label='Exit', command=self.client_exit)
+        file.add_command(label='Download', command=self.showDownloadWindow)
+        file.add_command(label='Exit', command=self.close)
         self.menu.add_cascade(label='File', menu=file)
 
         self.fList = Listbox(self.root,width=69,height=20,bg='white') # width ==> 한 줄에 들어갈 '문자 수', height==> 줄 수
@@ -31,15 +35,22 @@ class body:
         self.regBtn = Button(self.root, text="업로드", width=20, height=2, command=self.reg)
         self.regBtn.grid(pady=5,row=1,column=2)
 
-    def client_exit(self):
-        exit()
+    def showDownloadWindow(self):
+        self.skeleton=download.downBody()
+        self.skeleton.start()
 
     def start(self): # 프로그램 시작
         self.root.mainloop()
 
+    def close(self):
+        if self.active:
+            self.skeleton.close()
+        self.root.destroy()
+        exit(0)
+
     def isEmpty(self): # 파일 리스트가 비워지지 않았는지 체크
         if self.fList.index("end") != 0: return True
-        messagebox.showwarning('경고', '파일을 등록하지 않았습니다.\n왼쪽 하단의 \'파일 선택\' 버튼을 눌러 파일을 등록해주세요')
+        messagebox.showwarning('경고', '파일을 등록하지 않았습니다.\n왼쪽 하단의 \'파일 등록\' 버튼을 눌러 파일을 등록해주세요')
         return False
     
     def ins(self):  # ins ==> insert

@@ -2,6 +2,7 @@ from tkinter import messagebox
 import ftplib
 import os
 
+ftp = None
 def upload(fName):
     file = open(fName, 'rb') # read binary 모드
     # <-----파일 이름만 추출
@@ -13,11 +14,9 @@ def upload(fName):
         ftp = ftplib.FTP() # FTP 로그인
         ftp.encoding='utf-8' # 파일을 utf-8 인코딩으로 바꾸어준다.
         ftp.storbinary('STOR ' + newFileName, file) # FTP Server에 파일 올리기
-        ftp.close() # ftp 객체 닫기
+        ftp.close()
         messagebox.showinfo('업로드 성공', '파일이 성공적으로 업로드 되었습니다.')
         return
-
     else :
         messagebox.showerror('파일 에러', '파일이 존재하지 않습니다.')
         return
-
